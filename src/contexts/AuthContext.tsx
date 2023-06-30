@@ -4,19 +4,15 @@ import { Api } from "@/services/api";
 const api = Api();
 
 type AuthContextData = {
-  getCharacters: (
-    credentials: getCharactersProps
-  ) => Promise<getCharactersProps[]>;
+  getCharacters: (credentials: getCharactersProps) => Promise<getCharactersProps[]>;
 };
 
-
-
 export const AuthContext = createContext({} as AuthContextData);
-
 
 type AuthProviderProps = {
   children: ReactNode;
 };
+
 type getCharactersProps = {
   id: number;
   name: string;
@@ -29,20 +25,22 @@ type getCharactersProps = {
   image: string;
 };
 
-type LocationProps= {
-    name: string;
-    url: string;
-}
+type LocationProps = {
+  name: string;
+  url: string;
+};
+
 type OriginProps = {
   name: string;
   url: string;
 };
 
-async function getCharacters(
-  credentials: getCharactersProps
-): Promise<getCharactersProps[]> {
+
+
+async function getCharacters(credentials: getCharactersProps): Promise<getCharactersProps[]> {
+    const [page, setPage] = useState<number>(1);
   try {
-    const response = await api.get("/character", {
+    const response = await api.get(`/character/?page=${page}`, {
       params: credentials,
     });
     const characters: getCharactersProps[] = response.data.results;
@@ -53,12 +51,14 @@ async function getCharacters(
   }
 }
 
-
 export function AuthProvider({ children }: AuthProviderProps) {
+
+
   return (
     <AuthContext.Provider
       value={{
         getCharacters,
+
       }}
     >
       {children}
