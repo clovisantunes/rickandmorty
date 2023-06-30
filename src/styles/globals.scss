@@ -1,0 +1,32 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: 0;
+}
+
+:root{
+    --background: #000000;
+    --green: #97ce4c;
+    --white: #fff;
+    --yellow: #f0e14a;
+    --blue: #62a4ab;
+}
+
+button{
+    cursor: pointer;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+body{
+    background: var(--background);
+}
+
+
+@font-face {
+    font-family: 'Get Schwifty';
+    src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/3089507/get-schwifty.woff') format('woff');
+  }
