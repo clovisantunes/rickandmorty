@@ -1,14 +1,15 @@
 .button{
-    width: 20vh;
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     background: none;
     border: solid 2px var(--green);
+    background: var(--black-100);
     border-radius: .5em;
     transition: all .3s ease;
-   margin: 0 2em;
+   overflow: hidden;
 }
 .button:hover{
     transform: scale(1.1);

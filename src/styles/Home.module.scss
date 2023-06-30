@@ -72,7 +72,7 @@
           ;
       }
 .mortyHunger{
-        top: -26.2%;
+        top: -19.3%;
         left: 20%;
         position: absolute;
         max-width: 6em;
@@ -80,72 +80,35 @@
         z-index: 7;
     }
 
-.containerCharacters {
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    margin-top: 13em;
-    width: 90%;
-    height: 40vh;
-    padding: 2em;
-    background: var(--background);
-    border-radius: 0.5em;
-    z-index: 6;
-    position: relative;
-
-    scroll-behavior: smooth; 
-    .scrollButton {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3em;
-      height: 3em;
-      background-color: transparent;
-      border: none;
-      outline: none;
-      cursor: pointer;
-    }
-  
-    .scrollButtonLeft {
-      left: 0;
-    }
-  
-    .scrollButtonRight {
-      right: 0;
-    }
-  
-    .characterImage {
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: contain;
-    }
-}
-.scrollButton{
-    top: 65%;
-    width: 2em;
-    height: 2em;
-    border-radius: 100%;
-    border: 1px solid var(--background);
-    background-color: var(--background);
-    color: var(--white);
-    opacity: .4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    transition: all .3s ease;
-}
-.scrollButton:hover{
-    transform: scale(1.1);
-}
-.scrollButtonLeft{
-    position: absolute;
-    left: 5%;
-    z-index: 99;
-}
-.scrollButtonRight{
-    position: absolute;
-    right: 5%;
-    z-index: 99;
-}
-  
+    .containerCharacters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 13em;
+        width: 90%;
+        padding: 2em;
+        background: var(--black);
+        border-radius: 0.5em;
+        position: relative;
+        transition: all 0.5s ease;
+      
+        .characterGrid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2em;
+          .characterItem {
+            
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 52vh;
+      
+            .characterImage {
+              width: 40%;
+              height: 100%;
+              object-fit: contain;
+            }
+          }
+        }
+      }
+      

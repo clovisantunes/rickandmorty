@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import Router from "next/router";
 import { Api } from "@/services/api";
 
 const api = Api();
