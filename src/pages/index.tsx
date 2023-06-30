@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import Head from "next/head";
 import styles from "@/styles/Home.module.scss";
-import Navbar from "./components/Header";
+import Navbar from "../components/Header";
 import hungryMorty from "../assets/mortyHungry.png";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
-import { Button } from "./components/UI/Button/index";
+import { Button } from "../components/UI/Button/index";
 import { FaCircle } from "react-icons/fa";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Api } from "@/services/api";
