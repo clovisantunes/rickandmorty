@@ -53,7 +53,6 @@ export default function Locations() {
         created: "",
       });
       setLocation(response);
-      console.log(response);
     } catch (err) {
       console.log("Erro", err);
     }
