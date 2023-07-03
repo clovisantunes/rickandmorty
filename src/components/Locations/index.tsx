@@ -3,76 +3,153 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import styles from "./styles.module.scss";
 import { Api } from "@/services/api";
 import { Button } from "../UI/Button";
+import Image from "next/image";
 
 type getLocationProps = {
   id: number;
   name: string;
   type: string;
   dimension: string;
-  residents: string;
+  residents: string[];
+  url: string;
+  created: string;
+};
+
+type getCharacterProps = {
+  id: number;
+  name: string;
+  species: string;
+  gender: string;
+  status: string;
+  origin: {
+    name: string;
+    url: string;
+  };
+  location: {
+    name: string;
+    url: string;
+  };
+  image: string;
+  episode: string[];
   url: string;
   created: string;
 };
 
 export default function Locations() {
-  const [currentLocation, setCurrentLocation] = useState<number[]>([1, 2, 3]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const api = Api();
-  const [location, setLocation] = useState<getLocationProps[]>([]);
+  const [locations, setLocations] = useState<getLocationProps[]>([]);
+  const [residents, setResidents] = useState<getCharacterProps[]>([]);
 
-  async function getLocationPage(
-    credentials: getLocationProps
-  ): Promise<getLocationProps[]> {
+  async function fetchLocationPage(page: number) {
     try {
-      const response = await api.get(`/location/${currentLocation}`, {
+      const response = await api.get("/location", {
         params: {
-          id: credentials.id,
-          name: credentials.name,
-          type: credentials.type,
-          dimension: credentials.dimension,
-          residents: credentials.residents,
-          url: credentials.url,
-          created: credentials.created,
+          page,
         },
       });
-      const data = response.data;
+      const data = response.data.results;
+      console.log(response);
       return data;
     } catch (err) {
-      console.log("Erro", err);
+      console.log("Error", err);
       throw err;
     }
   }
 
-  async function fetchLocationPage() {
+  async function fetchCurrentPage() {
     try {
-      const response = await getLocationPage({
-        id: 0,
-        name: "",
-        type: "",
-        dimension: "",
-        residents: "",
-        url: "",
-        created: "",
-      });
-      setLocation(response);
+      const response = await fetchLocationPage(currentPage);
+      setLocations(response);
     } catch (err) {
-      console.log("Erro", err);
+      console.log("Error", err);
+    }
+  }
+
+  async function fetchCharacters(residentUrls: string[]) {
+    try {
+      const charactersData = await Promise.all(
+        residentUrls.map((url) =>
+          api.get(url).then((response) => response.data)
+        )
+      );
+      setResidents(charactersData);
+    } catch (err) {
+      console.log("Error", err);
     }
   }
 
   useEffect(() => {
-    fetchLocationPage();
-  }, []);
+    fetchCurrentPage();
+  }, [currentPage]);
+
+  useEffect(() => {
+    const residentUrls = locations.reduce<string[]>(
+      (acc, location) => [...acc, ...location.residents],
+      []
+    );
+    fetchCharacters(residentUrls);
+  }, [locations]);
+
+  function handleNextPage() {
+    if(currentPage < 7)
+    setCurrentPage((prevPage) => prevPage + 1);
+  }
+
+  function handlePrevPage() {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  }
 
   return (
     <>
       <div className={styles.containerLocation}>
         <div className={styles.locationGrid}>
-          {location && location.length > 0 ? (
-            location.map((location) => (
-                <Button type="button">
-                       <h1>{location.name}</h1>
-                </Button>
-
+          <div className={styles.pages}>
+            {currentPage > 1 && <FaArrowLeft onClick={handlePrevPage} />}
+            
+            { currentPage < 7 && <FaArrowRight onClick={handleNextPage} />}
+          </div>
+          {locations && locations.length > 0 ? (
+            locations.map((location) => (
+              <Button type="button" key={location.id}>
+                <div className={styles.buttonContainer}>
+                  <div className={styles.textTypes}>
+                    <h1>Local: {location.name}</h1>
+                    <span className={styles.spanType}>
+                      Tipo:{" "}
+                      <span className={styles.spanTypeItem}>
+                        {location.type}
+                      </span>
+                    </span>
+                    <span className={styles.dimension}>
+                      Dimensão: {location.dimension}
+                    </span>
+                  </div>
+                  <div className={styles.characters}>
+                    {location.residents.length > 0 ? (
+                      residents
+                        .filter((resident) =>
+                          location.residents.includes(resident.url)
+                        ).slice(0, 10)
+                        .map((resident) => (
+                          <div key={resident.id}>
+                            <Image
+                              src={resident.image}
+                              alt={resident.name}
+                              width={55}
+                              height={55}
+                            />
+                            <span>{resident.name}</span>
+                          </div>
+                        ))
+                    ) : (
+                      <p>Vazio...</p>
+                    )}
+                  </div>
+                </div>
+              </Button>
             ))
           ) : (
             <p>Loading...</p>
