@@ -70,7 +70,7 @@ export default function Locations() {
           {location && location.length > 0 ? (
             location.map((location) => (
                 <Button type="button">
-                        {location.name}
+                       <h1>{location.name}</h1>
                 </Button>
 
             ))
