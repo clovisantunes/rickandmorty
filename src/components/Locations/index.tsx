@@ -15,7 +15,9 @@ type getLocationProps = {
 };
 
 export default function Locations() {
-  const [currentLocation, setCurrentLocation] = useState<number[]>([1, 2, 3]);
+  const [currentLocation, setCurrentLocation] = useState<number[]>([
+    1, 2, 3, 4, 5, 6,
+  ]);
   const api = Api();
   const [location, setLocation] = useState<getLocationProps[]>([]);
 
@@ -68,11 +70,7 @@ export default function Locations() {
       <div className={styles.containerLocation}>
         <div className={styles.locationGrid}>
           {location && location.length > 0 ? (
-            location.map((location) => (
-              <Button>
-                {location.name}
-              </Button>
-            ))
+            location.map((location) => <Button>{location.name}</Button>)
           ) : (
             <p>Loading...</p>
           )}
