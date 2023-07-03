@@ -1,0 +1,18 @@
+.containerLocation{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 13em;
+    width: 90%;
+    height: 60vh;
+    padding: 2em;
+    background: var(--black);
+    border-radius: 0.5em;
+    position: relative;
+    transition: all 0.5s ease;
+    .locationGrid{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2em;
+    }
+}

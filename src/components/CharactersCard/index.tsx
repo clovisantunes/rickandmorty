@@ -1,20 +1,19 @@
 import { useRef } from "react";
-import hungryMorty from "../../assets/mortyHungry.png"
+import hungryMorty from "../../assets/mortyHungry.png";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "../UI/Button";
 import { FaCircle } from "react-icons/fa";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Api } from "@/services/api";
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
-export default function Characters(){
-    const [characters, setCharacters] = useState<any[]>([]);
+export default function Characters() {
+  const [characters, setCharacters] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const api = Api();
   const [page, setPage] = useState<number>(1);
   const wubba = "wubba lubba dub dub";
-
 
   function getStatusColor(status: string) {
     if (status === "Alive") {
@@ -87,6 +86,7 @@ export default function Characters(){
         image: "",
       });
       setCharacters(response);
+      console.log(characters)
     } catch (err) {
       console.log("Erro na requisição ", err);
     }
@@ -104,65 +104,63 @@ export default function Characters(){
       setPage((prevPage) => prevPage - 1);
     }
   }
-    return(
-        <>
-            <div className={styles.containerMain}>
-          <div className={styles.portal} />
-          <h1>{wubba}</h1>
-          <h2>{wubba}</h2>
-          <h3>{wubba}</h3>
-          <Image src={hungryMorty} alt="Morty" className={styles.mortyHunger} />
-          <div className={styles.containerCharacters}>
-            <div className={styles.characterGrid}>
-              <div className={styles.pages}>
-                {page > 1 && <FaArrowLeft onClick={handlePrevPage} />}
-                <FaArrowRight onClick={handleNextPage} />
-              </div>
-              {characters.slice(0, 6).map((character) => (
-                <Button key={character.id}>
-                  <div className={styles.characterItem}>
-                    <Image
-                      src={character.image}
-                      alt="Imagem Personagem"
-                      width={200}
-                      height={300}
-                      className={styles.characterImage}
-                    />
-                    <div className={styles.characterInformation}>
-                      <div className={styles.nameStatus}>
-                        <span className={styles.name}>{character.name}</span>
-                        <span>
-                          <FaCircle color={getStatusColor(character.status)} />
-                          {character.status} - {character.species}
-                        </span>
-                      </div>
-                      <div className={styles.local}>
-                        <span className={styles.local}>
-                          Última localização:
-                        </span>
-                        <span className={styles.localItem}>
-                          <a href={character.location.url}>
-                            {character.location.name}
-                          </a>
-                        </span>
-                      </div>
-                      <div className={styles.local}>
-                        <span className={styles.local}>
-                          Primeira localização:
-                        </span>
-                        <span className={styles.localItem}>
-                          <a href={character.origin.url}>
-                            {character.origin.name}
-                          </a>
-                        </span>
-                      </div>
+  return (
+    <>
+      <div className={styles.containerMain}>
+        <div className={styles.portal} />
+        <h1>{wubba}</h1>
+        <h2>{wubba}</h2>
+        <h3>{wubba}</h3>
+        <Image src={hungryMorty} alt="Morty" className={styles.mortyHunger} />
+        <div className={styles.containerCharacters}>
+          <div className={styles.characterGrid}>
+            <div className={styles.pages}>
+              {page > 1 && <FaArrowLeft onClick={handlePrevPage} />}
+              <FaArrowRight onClick={handleNextPage} />
+            </div>
+            {characters.slice(0, 6).map((character) => (
+              <Button key={character.id}>
+                <div className={styles.characterItem}>
+                  <Image
+                    src={character.image}
+                    alt="Imagem Personagem"
+                    width={200}
+                    height={300}
+                    className={styles.characterImage}
+                  />
+                  <div className={styles.characterInformation}>
+                    <div className={styles.nameStatus}>
+                      <span className={styles.name}>{character.name}</span>
+                      <span>
+                        <FaCircle color={getStatusColor(character.status)} />
+                        {character.status} - {character.species}
+                      </span>
+                    </div>
+                    <div className={styles.local}>
+                      <span className={styles.local}>Última localização:</span>
+                      <span className={styles.localItem}>
+                        <a href={character.location.url}>
+                          {character.location.name}
+                        </a>
+                      </span>
+                    </div>
+                    <div className={styles.local}>
+                      <span className={styles.local}>
+                        Primeira localização:
+                      </span>
+                      <span className={styles.localItem}>
+                        <a href={character.origin.url}>
+                          {character.origin.name}
+                        </a>
+                      </span>
                     </div>
                   </div>
-                </Button>
-              ))}
-            </div>
+                </div>
+              </Button>
+            ))}
           </div>
         </div>
-        </>
-    )
+      </div>
+    </>
+  );
 }
