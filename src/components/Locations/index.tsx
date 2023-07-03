@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import styles from "./styles.module.scss";
 import { Api } from "@/services/api";
+import { Button } from "../UI/Button";
 
 type getLocationProps = {
   id: number;
@@ -68,7 +69,10 @@ export default function Locations() {
         <div className={styles.locationGrid}>
           {location && location.length > 0 ? (
             location.map((location) => (
-              <h1 key={location.id}>{location.name}</h1>
+                <Button type="button">
+                        {location.name}
+                </Button>
+
             ))
           ) : (
             <p>Loading...</p>
