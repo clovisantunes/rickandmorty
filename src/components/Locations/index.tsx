@@ -4,6 +4,7 @@ import styles from "./styles.module.scss";
 import { Api } from "@/services/api";
 import { Button } from "../UI/Button";
 import Image from "next/image";
+import jerry from '../../assets/jerry.png';
 
 type getLocationProps = {
   id: number;
@@ -105,10 +106,10 @@ export default function Locations() {
   return (
     <>
       <div className={styles.containerLocation}>
+        <Image  className={styles.jerry} src={jerry} alt="Jerry" />
         <div className={styles.locationGrid}>
           <div className={styles.pages}>
             {currentPage > 1 && <FaArrowLeft onClick={handlePrevPage} />}
-            
             { currentPage < 7 && <FaArrowRight onClick={handleNextPage} />}
           </div>
           {locations && locations.length > 0 ? (

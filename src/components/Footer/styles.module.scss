@@ -1,0 +1,22 @@
+.footer{
+    width: 100%;
+    border-top: solid 2px var(--green);
+    
+    .items{
+        padding: .5em 12em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .text{
+            display: flex;
+            align-items: center;
+            span{
+                color: var(--white);
+                font-size: 1.2em;
+                .name{
+                    color: var(--pink);
+                }
+            }
+        }
+    }
+}
