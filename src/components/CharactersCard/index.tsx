@@ -7,6 +7,7 @@ import { FaCircle } from "react-icons/fa";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Api } from "@/services/api";
 import styles from "./styles.module.scss";
+import Modal from 'react-modal';
 
 export default function Characters() {
   const [characters, setCharacters] = useState<any[]>([]);
