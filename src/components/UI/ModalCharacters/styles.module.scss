@@ -1,0 +1,34 @@
+.containerModal{
+    width: 100%;
+    z-index: 12;
+    padding: 2em;
+    .containerCharacters{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .imgToken{
+            border: solid 2px white;
+            border-radius: 1em;
+            overflow: hidden;
+            img{
+                min-width: 100%;
+                min-height: 100%;
+            }
+        }
+        .token{
+            width: 60%;
+            span{
+                
+                padding: .5em;
+                border: solid 1px white;
+                color: var(--white);
+                display: flex;
+                flex-direction: column;
+                font-size: 1em;
+                h2{
+                    font-size: 2em;
+                }
+            }
+        }
+    }
+}

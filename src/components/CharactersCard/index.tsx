@@ -7,7 +7,8 @@ import { FaCircle } from "react-icons/fa";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Api } from "@/services/api";
 import styles from "./styles.module.scss";
-import Modal from 'react-modal';
+import Modal from "react-modal";
+import ModalCharacters from "../UI/ModalCharacters";
 
 export default function Characters() {
   const [characters, setCharacters] = useState<any[]>([]);
@@ -15,6 +16,8 @@ export default function Characters() {
   const api = Api();
   const [page, setPage] = useState<number>(1);
   const wubba = "wubba lubba dub dub";
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   function getStatusColor(status: string) {
     if (status === "Alive") {
@@ -87,7 +90,7 @@ export default function Characters() {
         image: "",
       });
       setCharacters(response);
-      console.log(characters)
+      console.log(characters);
     } catch (err) {
       console.log("Erro na requisição ", err);
     }
@@ -105,13 +108,21 @@ export default function Characters() {
       setPage((prevPage) => prevPage - 1);
     }
   }
+
+  const handleOpenModalView = (index: number) => {
+    setSelectedIndex(characters[index]);
+    setModalVisible(true);
+  };
+
+  Modal.setAppElement("#__next");
+
   return (
     <>
       <div className={styles.containerMain}>
         <div className={styles.portal} />
-        <h1>{wubba}</h1>
-        <h2>{wubba}</h2>
         <h3>{wubba}</h3>
+        <h2>{wubba}</h2>
+        <h1>{wubba}</h1>
         <Image src={hungryMorty} alt="Morty" className={styles.mortyHunger} />
         <div className={styles.containerCharacters}>
           <div className={styles.characterGrid}>
@@ -120,7 +131,7 @@ export default function Characters() {
               <FaArrowRight onClick={handleNextPage} />
             </div>
             {characters.slice(0, 6).map((character) => (
-              <Button key={character.id}>
+              <Button key={character.id} onClick={() => handleOpenModalView(characters.indexOf(character))}>
                 <div className={styles.characterItem}>
                   <Image
                     src={character.image}
@@ -140,9 +151,7 @@ export default function Characters() {
                     <div className={styles.local}>
                       <span className={styles.local}>Última localização:</span>
                       <span className={styles.localItem}>
-                        <a href={character.location.url}>
-                          {character.location.name}
-                        </a>
+                        {character.location.name}
                       </span>
                     </div>
                     <div className={styles.local}>
@@ -150,9 +159,7 @@ export default function Characters() {
                         Primeira localização:
                       </span>
                       <span className={styles.localItem}>
-                        <a href={character.origin.url}>
-                          {character.origin.name}
-                        </a>
+                        {character.origin.name}
                       </span>
                     </div>
                   </div>
@@ -162,6 +169,13 @@ export default function Characters() {
           </div>
         </div>
       </div>
+      {modalVisible && (
+        <ModalCharacters
+          isOpen={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+          selectedIndex={selectedIndex}
+        />
+      )}
     </>
   );
 }

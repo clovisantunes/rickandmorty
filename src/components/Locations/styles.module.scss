@@ -1,3 +1,15 @@
+.location{
+  position: relative;
+  .jerry{
+    position: absolute;
+    top: -5%;
+    right: 10%;
+    width: 9%;
+    height: 7%;
+  
+  }
+
+}
 .containerLocation {
   display: flex;
   flex-wrap: wrap;
@@ -11,14 +23,6 @@
   transition: all 0.5s ease;
 
 
-  .jerry{
-    position: absolute;
-    top: -4%;
-    left: 40%;
-    width: 13%;
-    height: 10%;
-    z-index: 0;
-  }
   .buttonContainer{
     display: flex;
     flex-direction: column;
@@ -35,7 +39,7 @@
       position: absolute;
       right: 0;
       top: 0;
-      color: var(--green);
+      color: var(--white);
       
       span{
         font-size: 2em;

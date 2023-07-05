@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import { Api } from "@/services/api";
 import { Button } from "../UI/Button";
 import Image from "next/image";
-import jerry from '../../assets/jerry.png';
+import jerry from "../../assets/jerry.png";
 
 type getLocationProps = {
   id: number;
@@ -93,8 +93,7 @@ export default function Locations() {
   }, [locations]);
 
   function handleNextPage() {
-    if(currentPage < 7)
-    setCurrentPage((prevPage) => prevPage + 1);
+    if (currentPage < 7) setCurrentPage((prevPage) => prevPage + 1);
   }
 
   function handlePrevPage() {
@@ -105,56 +104,59 @@ export default function Locations() {
 
   return (
     <>
-      <div className={styles.containerLocation}>
-        <Image  className={styles.jerry} src={jerry} alt="Jerry" />
-        <div className={styles.locationGrid}>
-          <div className={styles.pages}>
-            {currentPage > 1 && <FaArrowLeft onClick={handlePrevPage} />}
-            { currentPage < 7 && <FaArrowRight onClick={handleNextPage} />}
-          </div>
-          {locations && locations.length > 0 ? (
-            locations.map((location) => (
-              <Button type="button" key={location.id}>
-                <div className={styles.buttonContainer}>
-                  <div className={styles.textTypes}>
-                    <h1>Local: {location.name}</h1>
-                    <span className={styles.spanType}>
-                      Tipo:{" "}
-                      <span className={styles.spanTypeItem}>
-                        {location.type}
+      <div className={styles.location}>
+        <Image className={styles.jerry} src={jerry} alt="Jerry" />
+        <div className={styles.containerLocation}>
+          <div className={styles.locationGrid}>
+            <div className={styles.pages}>
+              {currentPage > 1 && <FaArrowLeft onClick={handlePrevPage} />}
+              {currentPage < 7 && <FaArrowRight onClick={handleNextPage} />}
+            </div>
+            {locations && locations.length > 0 ? (
+              locations.map((location) => (
+                <Button type="button" key={location.id}>
+                  <div className={styles.buttonContainer}>
+                    <div className={styles.textTypes}>
+                      <h1>Local: {location.name}</h1>
+                      <span className={styles.spanType}>
+                        Tipo:{" "}
+                        <span className={styles.spanTypeItem}>
+                          {location.type}
+                        </span>
                       </span>
-                    </span>
-                    <span className={styles.dimension}>
-                      Dimensão: {location.dimension}
-                    </span>
+                      <span className={styles.dimension}>
+                        Dimensão: {location.dimension}
+                      </span>
+                    </div>
+                    <div className={styles.characters}>
+                      {location.residents.length > 0 ? (
+                        residents
+                          .filter((resident) =>
+                            location.residents.includes(resident.url)
+                          )
+                          .slice(0, 10)
+                          .map((resident) => (
+                            <div key={resident.id}>
+                              <Image
+                                src={resident.image}
+                                alt={resident.name}
+                                width={55}
+                                height={55}
+                              />
+                              <span>{resident.name}</span>
+                            </div>
+                          ))
+                      ) : (
+                        <p>Vazio...</p>
+                      )}
+                    </div>
                   </div>
-                  <div className={styles.characters}>
-                    {location.residents.length > 0 ? (
-                      residents
-                        .filter((resident) =>
-                          location.residents.includes(resident.url)
-                        ).slice(0, 10)
-                        .map((resident) => (
-                          <div key={resident.id}>
-                            <Image
-                              src={resident.image}
-                              alt={resident.name}
-                              width={55}
-                              height={55}
-                            />
-                            <span>{resident.name}</span>
-                          </div>
-                        ))
-                    ) : (
-                      <p>Vazio...</p>
-                    )}
-                  </div>
-                </div>
-              </Button>
-            ))
-          ) : (
-            <p>Loading...</p>
-          )}
+                </Button>
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
         </div>
       </div>
     </>
