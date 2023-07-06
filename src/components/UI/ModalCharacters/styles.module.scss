@@ -22,16 +22,24 @@
         flex-direction: row;
         justify-content: space-between;
         .imgToken{
-            border: solid 2px white;
-            border-radius: 1em;
             overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
             img{
-                min-width: 100%;
-                min-height: 100%;
+                width: auto;
+                height: auto;
+                border-radius: 1em;
+            }
+            .rick{
+                width: 200px;
+                height: 200px;
+                margin-top: -3%;
             }
         }
         .token{
-            width: 60%;
+            width: 50%;
+            margin-right: 10%;
             span{
                 
                 padding: .5em;
@@ -48,11 +56,34 @@
     }
     .meseeks{
         position: absolute;
-        bottom: -15%;
-        right: 5px;
+    bottom: 0;
+    right: 0;
+    width: 10%;
+
        img{
-           height: 150px;
-         width: 100px;
+            height: 100%;
+             width: 100%;
        }
+    }
+    .eps{
+        width: 90%;
+        text-align: center;
+        span{
+            color: var(--white);
+            font-size: 1.5em;
+        }
+        select{
+            width: 100%;
+            font-size: 1.5em;
+            margin-top: .5em;
+            font-weight: bold;
+            background: none;
+            color: var(--white);
+            border: solid 1px var(--white);
+            border-radius: .3em;
+            option{
+                background-color: var(--black-100);
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ import { FiX } from "react-icons/fi";
 import Image from "next/image";
 import meseeks from '../../../assets/messeks.png';
 import axios, { AxiosError } from 'axios';
-
+import Rick from '../../../assets/rick.png';
 
 
 interface ModalCharactersProps {
@@ -68,27 +68,39 @@ interface EpisodeProps {
   episode: string;
 }
 
+
+
+
 async function getEpisode(credentials: EpisodeProps): Promise<EpisodeProps[]> {
-  const episodeGet = axios.create({
-    baseURL: episode
+  if (!selectedIndex || !selectedIndex.episode) {
+    return [];
+  }
+  const episodePromises = selectedIndex.episode.map(async (episodeUrl: string) => {
+    try {
+      const response = await axios.get(episodeUrl);
+      const episodeData: EpisodeProps = {
+        id: response.data.id,
+        name: response.data.name,
+        air_date: response.data.air_date,
+        episode: response.data.episode
+      };
+      return episodeData;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   });
+
   try {
-    const response = await episodeGet.get("", {
-      params: {
-        id: credentials.id,
-        name: credentials.name,
-        air_date: credentials.air_date,
-        episode: credentials.episode,
-      },
-    });
-    const episode: EpisodeProps[] = response.data;
-    console.log (response)
-    return episode;
+    const episodeResults = await Promise.all(episodePromises);
+    return episodeResults;
   } catch (err) {
     console.log(err);
     throw err;
   }
 }
+
+
 
 async function fetchEpisode() {
   try{
@@ -99,7 +111,7 @@ async function fetchEpisode() {
       episode: ""
     });
     setSelectedEpisode(response)
-    console.log(response)
+    
   }catch(err){
     console.log(err);
   }
@@ -114,7 +126,7 @@ useEffect(() =>{
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
       <div className={styles.containerModal}>
-      <FiX  onClick={onRequestClose}/>
+        <FiX onClick={onRequestClose} />
         <div className={styles.containerCharacters}>
           <div className={styles.imgToken}>
             <Image
@@ -123,6 +135,7 @@ useEffect(() =>{
               width={300}
               height={250}
             />
+          <Image src={Rick} alt="Rick" width={200} height={150}  className={styles.rick}/>
           </div>
           <div className={styles.token}>
             <span>
@@ -147,12 +160,17 @@ useEffect(() =>{
             </span>
           </div>
           <div className={styles.meseeks}>
-            <Image src={meseeks} alt="Mrs'Meseeks"/>
+            <Image src={meseeks} alt="Mrs'Meseeks" />
           </div>
         </div>
-          <div className={styles.eps}>
-            {episode}
-          </div>
+        <div className={styles.eps}>
+            <span>Selecione um episodio para ver as informações:</span>
+          <select>
+            {selectedEpisode.map((episode) => (
+              <option value={episode.id}>{episode.name}</option>
+            ))}
+          </select>
+        </div>
       </div>
     </Modal>
   );
