@@ -50,7 +50,6 @@ export default function Locations() {
         },
       });
       const data = response.data.results;
-      console.log(response);
       return data;
     } catch (err) {
       console.log("Error", err);

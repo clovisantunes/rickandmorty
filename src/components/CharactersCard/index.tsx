@@ -39,6 +39,7 @@ export default function Characters() {
     origin: OriginProps;
     location: LocationProps;
     image: string;
+    episode: string;
   };
 
   type LocationProps = {
@@ -66,6 +67,7 @@ export default function Characters() {
           origin: credentials.origin,
           location: credentials.location,
           image: credentials.image,
+          episode:credentials.episode,
         },
       });
       const characters: getCharactersProps[] = response.data.results;
@@ -88,9 +90,9 @@ export default function Characters() {
         origin: { name: "", url: "" },
         location: { name: "", url: "" },
         image: "",
+        episode:"",
       });
       setCharacters(response);
-      console.log(characters);
     } catch (err) {
       console.log("Erro na requisição ", err);
     }

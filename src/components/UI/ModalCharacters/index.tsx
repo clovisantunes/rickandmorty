@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import styles from "./styles.module.scss";
+import { FiX } from "react-icons/fi";
 import Image from "next/image";
+import meseeks from '../../../assets/messeks.png';
+import axios, { AxiosError } from 'axios';
+
+
 
 interface ModalCharactersProps {
   isOpen: boolean;
@@ -16,6 +21,7 @@ interface ModalCharactersProps {
     origin: OriginProps;
     location: LocationProps;
     image: string;
+    episode: string;
   } | null;
 }
 type LocationProps = {
@@ -46,17 +52,69 @@ export default function ModalCharacters({
       height: "80%",
     },
   };
+  const [ selectedEpisode, setSelectedEpisode ] = useState<any[]>([]);
 
   if (!selectedIndex) {
     return null;
   }
 
-  const { id, name, status, species, type, origin, gender, location, image } =
+  const { id, name, status, species, type, origin, gender, location, image, episode } =
     selectedIndex;
+
+interface EpisodeProps {
+  id: number;
+  name: string;
+  air_date: string;
+  episode: string;
+}
+
+async function getEpisode(credentials: EpisodeProps): Promise<EpisodeProps[]> {
+  const episodeGet = axios.create({
+    baseURL: episode
+  });
+  try {
+    const response = await episodeGet.get("", {
+      params: {
+        id: credentials.id,
+        name: credentials.name,
+        air_date: credentials.air_date,
+        episode: credentials.episode,
+      },
+    });
+    const episode: EpisodeProps[] = response.data;
+    console.log (response)
+    return episode;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+async function fetchEpisode() {
+  try{
+    const response = await getEpisode({
+      id: 0,
+      name: "",
+      air_date: "",
+      episode: ""
+    });
+    setSelectedEpisode(response)
+    console.log(response)
+  }catch(err){
+    console.log(err);
+  }
+}
+useEffect(() =>{
+  fetchEpisode();
+}, [])
+
+
+
+
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
       <div className={styles.containerModal}>
-
+      <FiX  onClick={onRequestClose}/>
         <div className={styles.containerCharacters}>
           <div className={styles.imgToken}>
             <Image
@@ -88,10 +146,13 @@ export default function ModalCharacters({
               Ultima localização: <h2> {location.name}</h2>{" "}
             </span>
           </div>
-          <div className={styles.eps}>
-            {}
+          <div className={styles.meseeks}>
+            <Image src={meseeks} alt="Mrs'Meseeks"/>
           </div>
         </div>
+          <div className={styles.eps}>
+            {episode}
+          </div>
       </div>
     </Modal>
   );

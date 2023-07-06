@@ -2,6 +2,21 @@
     width: 100%;
     z-index: 12;
     padding: 2em;
+    position: relative;
+    svg{
+        position: absolute;
+        color: var(--white);
+        width: 25px;
+        height: 25px;
+        right: 0;
+        top: 5px;
+        transition: all .3s ease;
+        cursor: pointer;
+    }
+    svg:hover{
+        transform: scale(1.1);
+         color: var(--green);
+    }
     .containerCharacters{
         display: flex;
         flex-direction: row;
@@ -30,5 +45,14 @@
                 }
             }
         }
+    }
+    .meseeks{
+        position: absolute;
+        bottom: -15%;
+        right: 5px;
+       img{
+           height: 150px;
+         width: 100px;
+       }
     }
 }
