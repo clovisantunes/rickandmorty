@@ -75,7 +75,9 @@ async function getEpisode(credentials: EpisodeProps): Promise<EpisodeProps[]> {
   if (!selectedIndex || !selectedIndex.episode) {
     return [];
   }
-  const episodePromises = selectedIndex.episode.map(async (episodeUrl: string) => {
+
+  const episodeList = Array.isArray(selectedIndex.episode) ? selectedIndex.episode : [selectedIndex.episode];
+  const episodePromises = episodeList.map(async (episodeUrl: string) => {
     try {
       const response = await axios.get(episodeUrl);
       const episodeData: EpisodeProps = {
