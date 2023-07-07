@@ -5,6 +5,10 @@ import { Api } from "@/services/api";
 import { Button } from "../UI/Button";
 import Image from "next/image";
 import jerry from "../../assets/jerry.png";
+import Modal from "react-modal";
+import ModalCharacters from "../UI/ModalCharacters";
+import ModalLocation from "../UI/ModalLocation";
+
 
 type getLocationProps = {
   id: number;
@@ -39,8 +43,12 @@ type getCharacterProps = {
 export default function Locations() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const api = Api();
-  const [locations, setLocations] = useState<getLocationProps[]>([]);
+  const [locations, setLocations] = useState<any[]>([]);
   const [residents, setResidents] = useState<getCharacterProps[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedResidents, setSelectedResidents ] = useState(null);
+
 
   async function fetchLocationPage(page: number) {
     try {
@@ -101,6 +109,13 @@ export default function Locations() {
     }
   }
 
+  const handleOpenModalView = (index: number) => {
+    setSelectedIndex(locations[index]);
+    setModalVisible(true);
+  };
+
+  Modal.setAppElement("#__next");
+
   return (
     <>
       <div className={styles.location}>
@@ -113,7 +128,13 @@ export default function Locations() {
             </div>
             {locations && locations.length > 0 ? (
               locations.map((location) => (
-                <Button type="button" key={location.id}>
+                <Button
+                  type="button"
+                  key={location.id}
+                  onClick={() => {
+                    handleOpenModalView(locations.indexOf(location));
+                  }}
+                >
                   <div className={styles.buttonContainer}>
                     <div className={styles.textTypes}>
                       <h1>Local: {location.name}</h1>
@@ -158,6 +179,13 @@ export default function Locations() {
           </div>
         </div>
       </div>
+      {modalVisible && (
+        <ModalLocation
+          isOpen={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+          selectedIndex={selectedIndex}
+        />
+      )}
     </>
   );
 }

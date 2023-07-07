@@ -19,6 +19,7 @@ export default function Characters() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
 
+  
   function getStatusColor(status: string) {
     if (status === "Alive") {
       return "green";
@@ -133,7 +134,9 @@ export default function Characters() {
               <FaArrowRight onClick={handleNextPage} />
             </div>
             {characters.slice(0, 6).map((character) => (
-              <Button key={character.id} onClick={() => handleOpenModalView(characters.indexOf(character))}>
+              <Button key={character.id} onClick={() => {
+                handleOpenModalView(characters.indexOf(character));
+              }}>
                 <div className={styles.characterItem}>
                   <Image
                     src={character.image}
@@ -172,11 +175,11 @@ export default function Characters() {
         </div>
       </div>
       {modalVisible && (
-        <ModalCharacters
-          isOpen={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-          selectedIndex={selectedIndex}
-        />
+       <ModalCharacters
+       isOpen={modalVisible}
+       onRequestClose={() => setModalVisible(false)}
+       selectedIndex={selectedIndex}
+     />
       )}
     </>
   );

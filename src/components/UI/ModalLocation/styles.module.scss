@@ -1,0 +1,55 @@
+.containerModal{
+    width: 100%;
+    z-index: 12;
+    padding: 2em;
+    position: relative;
+   
+    svg{
+        position: absolute;
+        color: var(--white);
+        width: 25px;
+        height: 25px;
+        right: 0;
+        top: 5px;
+        transition: all .3s ease;
+        cursor: pointer;
+    }
+    svg:hover{
+        transform: scale(1.1);
+         color: var(--green);
+    }
+    .containerLocation{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        h1{
+            color: var(--white);
+            font-family: sans-serif;
+        }
+        span{
+            color: var(--black-100);
+            font-size: 1.5em;
+            font-family: sans-serif;
+        }
+        .charactersContainer{
+                display: grid;
+                grid-template-columns: repeat(10, .1fr);
+                gap: 15px;
+                padding: .8em;
+                text-align: center;
+                transition: all .5s ease;
+                img{
+                    border-radius: .3em;
+                    transition: all .3s ease;
+                }
+                span{
+                    font-size: 1em;
+                    color: var(--white);
+                }
+                img:hover{
+                    transform: scale(1.2);
+                }
+                
+        }
+    }
+}

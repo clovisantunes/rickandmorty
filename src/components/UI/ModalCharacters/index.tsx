@@ -52,7 +52,9 @@ export default function ModalCharacters({
       height: "80%",
     },
   };
-  const [ selectedEpisode, setSelectedEpisode ] = useState<any[]>([]);
+  const [selectedEpisode, setSelectedEpisode] = useState<any[]>([]);
+  
+
 
   if (!selectedIndex) {
     return null;
@@ -61,74 +63,70 @@ export default function ModalCharacters({
   const { id, name, status, species, type, origin, gender, location, image, episode } =
     selectedIndex;
 
-interface EpisodeProps {
-  id: number;
-  name: string;
-  air_date: string;
-  episode: string;
-}
 
 
-
-
-async function getEpisode(credentials: EpisodeProps): Promise<EpisodeProps[]> {
-  if (!selectedIndex || !selectedIndex.episode) {
-    return [];
+  interface EpisodeProps {
+    id: number;
+    name: string;
+    air_date: string;
+    episode: string;
   }
+  async function getEpisode(credentials: EpisodeProps): Promise<EpisodeProps[]> {
+    if (!selectedIndex || !selectedIndex.episode) {
+      return [];
+    }
+    const episodeList = Array.isArray(selectedIndex.episode) ? selectedIndex.episode : [selectedIndex.episode];
+    const episodePromises = episodeList.map(async (episodeUrl: string) => {
+      try {
+        const response = await axios.get(episodeUrl);
+        const episodeData: EpisodeProps = {
+          id: response.data.id,
+          name: response.data.name,
+          air_date: response.data.air_date,
+          episode: response.data.episode
+        };
+        return episodeData;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    });
 
-  const episodeList = Array.isArray(selectedIndex.episode) ? selectedIndex.episode : [selectedIndex.episode];
-  const episodePromises = episodeList.map(async (episodeUrl: string) => {
     try {
-      const response = await axios.get(episodeUrl);
-      const episodeData: EpisodeProps = {
-        id: response.data.id,
-        name: response.data.name,
-        air_date: response.data.air_date,
-        episode: response.data.episode
-      };
-      return episodeData;
+      const episodeResults = await Promise.all(episodePromises);
+      return episodeResults;
     } catch (err) {
       console.log(err);
       throw err;
     }
-  });
-
-  try {
-    const episodeResults = await Promise.all(episodePromises);
-    return episodeResults;
-  } catch (err) {
-    console.log(err);
-    throw err;
   }
-}
 
 
 
-async function fetchEpisode() {
-  try{
-    const response = await getEpisode({
-      id: 0,
-      name: "",
-      air_date: "",
-      episode: ""
-    });
-    setSelectedEpisode(response)
-    
-  }catch(err){
-    console.log(err);
+  async function fetchEpisode() {
+    try {
+      const response = await getEpisode({
+        id: 0,
+        name: "",
+        air_date: "",
+        episode: ""
+      });
+      setSelectedEpisode(response)
+
+    } catch (err) {
+      console.log(err);
+    }
   }
-}
-useEffect(() =>{
-  fetchEpisode();
-}, [])
-
-
+  useEffect(() => {
+    fetchEpisode();
+  }, [])
 
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
       <div className={styles.containerModal}>
         <FiX onClick={onRequestClose} />
+        <div>
         <div className={styles.containerCharacters}>
           <div className={styles.imgToken}>
             <Image
@@ -137,7 +135,7 @@ useEffect(() =>{
               width={300}
               height={250}
             />
-          <Image src={Rick} alt="Rick" width={200} height={150}  className={styles.rick}/>
+            <Image src={Rick} alt="Rick" width={200} height={150} className={styles.rick} />
           </div>
           <div className={styles.token}>
             <span>
@@ -166,13 +164,14 @@ useEffect(() =>{
           </div>
         </div>
         <div className={styles.eps}>
-            <span>Selecione um episodio para ver as informações:</span>
+          <span>Selecione um episodio para ver as informações:</span>
           <select>
             {selectedEpisode.map((episode) => (
-              <option value={episode.id}>{episode.name}</option>
+              <option key={episode.id}>{episode.episode} {episode.name} {episode.air_date} </option>
             ))}
           </select>
         </div>
+      </div>
       </div>
     </Modal>
   );
