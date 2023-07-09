@@ -5,6 +5,7 @@ import { FiX } from "react-icons/fi";
 import Image from "next/image";
 import { Api } from "@/services/api";
 import { create } from "domain";
+import ModalCharacters from "../ModalCharacters";
 
 interface ModalLocationProps {
   isOpen: boolean;
@@ -62,7 +63,12 @@ export default function ModalLocation({
   }
   const api = Api();
   const { id, name, type, dimension } = selectedIndex;
-  const [residents, setResidents] = useState<getCharacterProps[]>([]);
+  const [residents, setResidents] = useState<any[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
+
+
+
 
   async function fetchCharacters(residentUrls: string[]) {
     try {
@@ -72,7 +78,6 @@ export default function ModalLocation({
         )
       );
       setResidents(charactersData);
-      console.log(residents);
     } catch (err) {
       console.log("Error", err);
     }
@@ -85,6 +90,12 @@ export default function ModalLocation({
     }
   }, [selectedIndex]);
 
+
+  const handleOpenModalView = (index: number) => {
+    setSelectedCharacter(residents[index]);
+    setModalVisible(true);
+  };
+
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
       <div className={styles.containerModal}>
@@ -96,23 +107,34 @@ export default function ModalLocation({
           </span>
           <div className={styles.charactersContainer}>
             {residents.length > 0 ? (
-              residents.map((character) => (
-                <div key={character.id}>
+              residents.map((characters) => (
+                <div key={characters.id}>
                   <Image
-                    src={character.image}
-                    alt={character.name}
+                    src={characters.image}
+                    alt={characters.name}
                     width={100}
                     height={100}
+                    onClick={() => {
+                      handleOpenModalView(residents.indexOf(characters));
+                    }}
                   />
-                  <span>{character.name}</span>
+                  <span>{characters.name}</span>
                 </div>
               ))
             ) : (
-              <p>Vazio....</p>
+              <p>Vazio...</p>
             )}
           </div>
         </div>
       </div>
+      {modalVisible && (
+        <ModalCharacters
+        isOpen={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        selectedCharacter={selectedCharacter}
+      />
+       )}
     </Modal>
+
   );
 }

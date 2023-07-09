@@ -11,7 +11,7 @@ import Rick from '../../../assets/rick.png';
 interface ModalCharactersProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  selectedIndex: {
+  selectedCharacter: {
     id: number;
     name: string;
     status: string;
@@ -37,7 +37,7 @@ type OriginProps = {
 export default function ModalCharacters({
   isOpen,
   onRequestClose,
-  selectedIndex,
+  selectedCharacter,
 }: ModalCharactersProps) {
   const customStyles = {
     content: {
@@ -55,13 +55,23 @@ export default function ModalCharacters({
   const [selectedEpisode, setSelectedEpisode] = useState<any[]>([]);
   
 
+  function statusColor(status: string) {
+    if (status === "Alive") {
+      return "green";
+    } else if (status === "Dead") {
+      return "red";
+    } else {
+      return "grey";
+    }
+  }
 
-  if (!selectedIndex) {
+
+  if (!selectedCharacter) {
     return null;
   }
 
   const { id, name, status, species, type, origin, gender, location, image, episode } =
-    selectedIndex;
+  selectedCharacter;
 
 
 
@@ -72,10 +82,10 @@ export default function ModalCharacters({
     episode: string;
   }
   async function getEpisode(credentials: EpisodeProps): Promise<EpisodeProps[]> {
-    if (!selectedIndex || !selectedIndex.episode) {
+    if (!selectedCharacter || !selectedCharacter.episode) {
       return [];
     }
-    const episodeList = Array.isArray(selectedIndex.episode) ? selectedIndex.episode : [selectedIndex.episode];
+    const episodeList = Array.isArray(selectedCharacter.episode) ? selectedCharacter.episode : [selectedCharacter.episode];
     const episodePromises = episodeList.map(async (episodeUrl: string) => {
       try {
         const response = await axios.get(episodeUrl);
@@ -144,10 +154,10 @@ export default function ModalCharacters({
             </span>
             <span>
               Genero:
-              <h2>{gender}</h2>{" "}
+              <h2>{gender} {type}</h2>{" "}
             </span>
             <span>
-              Estado: <h2> {status}</h2>{" "}
+              Estado: <h2 style={{ color: statusColor(status) }}>{status}</h2>{" "}
             </span>
             <span>
               Espécie: <h2> {species}</h2>{" "}

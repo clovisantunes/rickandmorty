@@ -17,10 +17,10 @@ export default function Characters() {
   const [page, setPage] = useState<number>(1);
   const wubba = "wubba lubba dub dub";
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   
-  function getStatusColor(status: string) {
+   function getStatusColor(status: string) {
     if (status === "Alive") {
       return "green";
     } else if (status === "Dead") {
@@ -113,7 +113,7 @@ export default function Characters() {
   }
 
   const handleOpenModalView = (index: number) => {
-    setSelectedIndex(characters[index]);
+    setSelectedCharacter(characters[index]);
     setModalVisible(true);
   };
 
@@ -178,7 +178,7 @@ export default function Characters() {
        <ModalCharacters
        isOpen={modalVisible}
        onRequestClose={() => setModalVisible(false)}
-       selectedIndex={selectedIndex}
+       selectedCharacter={selectedCharacter}
      />
       )}
     </>
